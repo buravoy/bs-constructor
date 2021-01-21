@@ -8,7 +8,9 @@
 
 
     <main>
-      <SideBar :isSidebarShow="sidebar.isShow"/>
+      <SideBar :isSidebarShow="sidebar.isShow"
+               :options="constructorItems"
+               @container-size="containerSize"/>
       <WorkArea :items="constructorItems">
 
       </WorkArea>
@@ -51,6 +53,10 @@ export default {
   methods: {
     hideSidebar() {
       this.sidebar.isShow = !this.sidebar.isShow;
+    },
+
+    containerSize(size) {
+      this.constructorItems.container = size
     }
   }
 }
@@ -70,7 +76,6 @@ export default {
   }
 
   footer {
-    /* Чтобы footer не уменьшался */
     flex-shrink: 0;
     background: cadetblue;
   }
