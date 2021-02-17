@@ -13,7 +13,16 @@
 
 <script>
     export default {
-        name: 'Card'
+        name: 'Card',
+
+      data () {
+        return {
+          config: {
+            title: 'Title',
+            content: ''
+          }
+        }
+      },
     }
 </script>
 

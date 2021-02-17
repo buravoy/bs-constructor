@@ -1,12 +1,16 @@
 <template>
     <div :class="{ hide: !isTopShow }" class="top d-flex justify-content-between border-bottom position-fixed w-100 bg-white">
-        <div class="p-1">
-            <button @click="hideSide" class="btn btn-sm btn-outline-primary rounded-0 shadow mr-1">
+        <div class="p-1 controls">
+            <button @click="hideSide" class="btn btn-sm btn-outline-primary rounded-0 shadow">
                 <i :class="{ rotate180: !isSidebarShow }" class="fas fa-angle-double-left"></i>
             </button>
 
             <button @click="hideTop" class="btn btn-sm btn-outline-primary rounded-0 shadow" type="button">
                 <i class="fas fa-angle-double-up"></i>
+            </button>
+
+            <button @click="saveInStorage" class="btn btn-sm btn-outline-primary rounded-0 shadow" type="button">
+              <i class="fas fa-save"></i>
             </button>
         </div>
 
@@ -49,6 +53,10 @@
 
             hideSide() {
                 this.$emit('hide-sidebar');
+            },
+
+            saveInStorage(){
+              console.log('saved')
             }
         }
     }
@@ -107,5 +115,9 @@
 
     .rotate180 {
         transform: rotate(180deg);
+    }
+
+    .controls button{
+      margin-right: 5px;
     }
 </style>
