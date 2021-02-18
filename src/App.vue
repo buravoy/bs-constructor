@@ -1,19 +1,17 @@
 <template>
-  <div id="app">
+  <div id="app"
+       @mousemove="mouseMove"
+       @dragstart="false">
 
     <header>
-      <HeadMenu :isSidebarShow="sidebar.isShow"
-                @hide-sidebar="hideSidebar"/>
+      <HeadMenu />
     </header>
 
 
     <main>
-      <SideBar :isSidebarShow="sidebar.isShow"
-               :options="constructorItems"
-               @container-size="containerSize"/>
-      <WorkArea :items="constructorItems">
+      <SideBar />
 
-      </WorkArea>
+      <WorkArea />
     </main>
 
     <footer>
@@ -29,7 +27,6 @@ import SideBar from './components/SideBar';
 import WorkArea from './components/WorkArea';
 
 
-
 export default {
   name: 'App',
   components: {
@@ -38,28 +35,17 @@ export default {
     WorkArea
   },
 
-  data:  () => {
-    return {
-      sidebar: {
-        isShow: true
-      },
-      constructorItems: {
-        container: 'container'
-
-      }
-    }
-  },
-
   methods: {
-    hideSidebar() {
-      this.sidebar.isShow = !this.sidebar.isShow;
-    },
-
-    containerSize(size) {
-      this.constructorItems.container = size
+    mouseMove(cursor) {
+      this.$store.commit('mousePosition', cursor)
     }
   }
 }
+
+
+
+
+
 </script>
 
 <style>
@@ -67,6 +53,7 @@ export default {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    user-select: none;
   }
 
   main {

@@ -1,6 +1,6 @@
 <template>
     <div id="field-to-save" class="work-area">
-        <div :class="items.container">
+        <div class="container">
             <div class="row">
                 <div class="col-4">
                     <Card/>

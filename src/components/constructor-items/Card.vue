@@ -14,15 +14,6 @@
 <script>
     export default {
         name: 'Card',
-
-      data () {
-        return {
-          config: {
-            title: 'Title',
-            content: ''
-          }
-        }
-      },
     }
 </script>
 

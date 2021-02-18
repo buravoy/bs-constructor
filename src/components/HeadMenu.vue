@@ -1,11 +1,11 @@
 <template>
-    <div :class="{ hide: !isTopShow }" class="top d-flex justify-content-between border-bottom position-fixed w-100 bg-white">
+    <div :class="{ hide: !$store.state.bars.isTopShow }" class="top d-flex justify-content-between border-bottom position-fixed w-100 bg-white">
         <div class="p-1 controls">
-            <button @click="hideSide" class="btn btn-sm btn-outline-primary rounded-0 shadow">
-                <i :class="{ rotate180: !isSidebarShow }" class="fas fa-angle-double-left"></i>
+            <button @click="$store.commit('toggleSidebar')" class="btn btn-sm btn-outline-primary rounded-0 shadow">
+                <i :class="{ rotate180: !$store.state.bars.isSideShow }" class="fas fa-angle-double-left"></i>
             </button>
 
-            <button @click="hideTop" class="btn btn-sm btn-outline-primary rounded-0 shadow" type="button">
+            <button @click="$store.commit('toggleTopbar')" class="btn btn-sm btn-outline-primary rounded-0 shadow" type="button">
                 <i class="fas fa-angle-double-up"></i>
             </button>
 
@@ -22,7 +22,7 @@
         </div>
 
         <div class="drop position-fixed">
-            <button @click="hideTop" type="button" class="drop-btn">
+            <button @click="$store.commit('toggleTopbar')" type="button" class="drop-btn">
                 <i class="fas fa-angle-double-down"></i>
             </button>
         </div>
@@ -47,13 +47,6 @@
         },
 
         methods:{
-            hideTop() {
-                this.isTopShow = !this.isTopShow;
-            },
-
-            hideSide() {
-                this.$emit('hide-sidebar');
-            },
 
             saveInStorage(){
               console.log('saved')

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ hide: !isSidebarShow }" class="sidebar">
+  <div :class="{ hide: !$store.state.bars.isSideShow }" class="sidebar">
 
     <div>
       <div class="accordion" id="accordion">
@@ -12,14 +12,14 @@
             </h5>
           </div>
 
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
 
               <div>
-                <h5>Макет {{ size }}</h5>
+                <h5>Макет</h5>
 
-                <label><input type="radio" name="container" :checked="options.container === 'container'" @click="changeSize('container')">Узкий</label>
-                <label><input type="radio" name="container" :checked="options.container === 'container-fluid'" @click="changeSize('container-fluid')">Широкий</label>
+                <label><input type="radio" name="container">Узкий</label>
+                <label><input type="radio" name="container">Широкий</label>
               </div>
 
               <div>
@@ -39,13 +39,10 @@
     <button ref="button" class="btn btn-primary rounded-0 m-0">Button</button>
 
     <div class="items-list">
-      <div @mousedown="pickUp"
-           @mouseup="dropDown"
-           ref="card"
+      <div @mouseover="readyToMove"
            class="item border bg-light p-2">
-        <p>Card <span>!!!!</span> ooo</p>
-      </div>
 
+      </div>
 
     </div>
 
@@ -56,57 +53,58 @@
 export default {
   name: 'SideBar',
 
-  data: () => {
-    return {
-      mouse: {
-        x: 0,
-        y: 0
-      },
-      size: '',
-      the_answer: '',
-      answer: ''
-    }
-  },
-
-  props: {
-    isSidebarShow: {
-      type: Boolean,
-      default: true
-    },
-    options: Object,
-    default: () => {
+  data(){
+    return{
+      moving: false
     }
   },
 
   methods: {
-    changeSize(size) {
-      this.$emit('container-size', size);
-    },
 
-    pickUp(el) {
-      console.log(el)
-      const item = el.target.closest('.item')
-
-
-
-      // const
-
-     // console.log(item)
-
-
-      item.style = 'transform: scale(1.1);'
-
-
-    },
-
-    dropDown(el){
+    readyToMove(el) {
       const item = el.target.closest('.item');
-      item.style = 'transform: "";'
 
-    }
+      item.onmousedown = function(e) {
+        const coords = {
+          top: item.getBoundingClientRect().top + pageYOffset,
+          left: item.getBoundingClientRect().left + pageXOffset
+        };
+
+        const shiftX = e.pageX - coords.left;
+        const shiftY = e.pageY - coords.top;
+
+        item.style.position = 'absolute';
+        document.body.appendChild(item);
+        moveAt(e);
+
+        item.style.zIndex = 1000; // над другими элементами
+
+        function moveAt(e) {
+          item.style.left = e.pageX - shiftX + 'px';
+          item.style.top = e.pageY - shiftY + 'px';
+        }
+
+        document.onmousemove = function(e) {
+          moveAt(e);
+        };
+
+        item.onmouseup = function() {
+          document.onmousemove = null;
+          item.onmouseup = null;
+        };
+
+      }
+
+      document.ondragstart = function() {
+        return false;
+      };
+
+    },
+
 
   }
 }
+
 </script>
 
 <style scoped>
@@ -129,8 +127,7 @@ export default {
 }
 
 .item {
-  position: absolute;
-  transition: .1s;
+  /*transition: .1s;*/
 }
 
 .items-list {
@@ -139,5 +136,7 @@ export default {
 
 .item {
   cursor: pointer;
+  width: 20px;
+  height: 50px;
 }
 </style>
